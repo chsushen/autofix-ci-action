@@ -1,4 +1,4 @@
-name: 'AutoFix-CI'
+name: 'AutoFix-CI-AST'
 description: 'Autonomous CI failure triage and self-healing action that inspects AST, generates verified LLM patches, and opens PRs.'
 author: 'Chunduri Sushen'
 branding:
