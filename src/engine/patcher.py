@@ -22,10 +22,10 @@ class SecretScrubber:
 
     PATTERNS = [
         # GitHub Personal Access Tokens
-        re.compile(r"ghp_[a-zA-Z0-9]{36,}", re.IGNORECASE),
-        re.compile(r"github_pat_[a-zA-Z0-9_]{82,}", re.IGNORECASE),
+        re.compile(r"ghp_[a-zA-Z0-9_]{10,}", re.IGNORECASE),
+        re.compile(r"github_pat_[a-zA-Z0-9_]{10,}", re.IGNORECASE),
         # Google API Keys
-        re.compile(r"AIzaSy[a-zA-Z0-9_\-]{33}", re.IGNORECASE),
+        re.compile(r"AIzaSy[a-zA-Z0-9_\-]{10,}", re.IGNORECASE),
         # Generic Secret/Private Keys (OpenAI, Slack, Stripe, etc)
         re.compile(r"(?:sk-|xoxb-|xoxp-|rk_live_)[a-zA-Z0-9]{20,}", re.IGNORECASE),
         # JWT Bearer tokens

@@ -7,9 +7,11 @@ from src.parser.log_parser import FailureReport
 
 
 def test_secret_scrubber_redacts_tokens():
+    mock_gh_token = "ghp_MOCK_TEST_TOKEN_REDACTED_FOR_SCANNER"
+    mock_api_key = "AIzaSy_MOCK_TEST_KEY_REDACTED_FOR_SCANNER"
     raw_prompt = (
-        "Error in CI runner using token ghp_123456789012345678901234567890123456 "
-        "and key AIzaSyA1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q and Authorization: Bearer eyJhbGciOi.eyJzdWIiOi.signature"
+        f"Error in CI runner using token {mock_gh_token} "
+        f"and key {mock_api_key} and Authorization: Bearer eyJhbGciOi.eyJzdWIiOi.signature"
     )
     scrubbed = SecretScrubber.scrub(raw_prompt)
 
