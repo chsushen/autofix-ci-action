@@ -1,0 +1,61 @@
+name: 'AutoFix-CI'
+description: 'Autonomous CI failure triage and self-healing action that inspects AST, generates verified LLM patches, and opens PRs.'
+author: 'Chunduri Sushen'
+branding:
+  icon: 'zap'
+  color: 'blue'
+
+inputs:
+  github_token:
+    description: 'GitHub Personal Access Token or GITHUB_TOKEN with repository write permissions.'
+    required: true
+  gemini_api_key:
+    description: 'Google Gemini API key for autonomous code patch synthesis.'
+    required: true
+  test_command:
+    description: 'Test command executed in the sandbox to verify candidate patches.'
+    required: false
+    default: 'pytest'
+  max_retries:
+    description: 'Maximum patch generation and validation attempts before halting.'
+    required: false
+    default: '2'
+  log_path:
+    description: 'Path to raw CI failure log file. If omitted, AutoFix-CI executes test_command to capture initial failure.'
+    required: false
+    default: ''
+  repo_dir:
+    description: 'Target repository working directory relative to runner workspace.'
+    required: false
+    default: '.'
+  dry_run:
+    description: 'Set to true to verify patches locally in sandbox without pushing to GitHub or opening a PR.'
+    required: false
+    default: 'false'
+
+outputs:
+  patch_status:
+    description: 'Final status of patch resolution (PASSED, FAILED, NO_ERROR_FOUND).'
+  pr_url:
+    description: 'URL of the opened GitHub Pull Request (if successfully generated and pushed).'
+  diff:
+    description: 'Synthesized unified diff patch.'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - '--github-token'
+    - ${{ inputs.github_token }}
+    - '--gemini-api-key'
+    - ${{ inputs.gemini_api_key }}
+    - '--test-command'
+    - ${{ inputs.test_command }}
+    - '--max-retries'
+    - ${{ inputs.max_retries }}
+    - '--log-file'
+    - ${{ inputs.log_path }}
+    - '--repo-dir'
+    - ${{ inputs.repo_dir }}
+    - '--dry-run'
+    - ${{ inputs.dry_run }}
